@@ -4,9 +4,9 @@
 # FILL THESE COMMENTS IN
 #*****************************************
 # YOUR NAME: Yassi Khorsandian
-# NUMBER OF HOURS TO COMPLETE:  (please track how long this homework takes you to complete).
+# NUMBER OF HOURS TO COMPLETE:  About 6 hours in total (please track how long this homework takes you to complete).
 # YOUR COLLABORATION STATEMENT(s) (refer to syllabus):
-#
+#“I worked alone on this assignment, but I did discuss my approach with a classmate named Allison Choi.
 #*****************************************
 
 #In this homework,the ultimate goal is to create a function called areaofatriangle,
@@ -28,7 +28,7 @@ def intersectionoftwolines_x(m1, b1, m2, b2):
     # y = (m1 * x) + b1 and y = (m2 * x) + b2 intersect.
 
 
-    x = 0 #replace this with your calculation for x
+    x = (b2 - b1) / (m1 - m2) #replace this with your calculation for x
     return x
 
 def intersectionoftwolines_y(m1, b1, m2, b2):
@@ -36,7 +36,7 @@ def intersectionoftwolines_y(m1, b1, m2, b2):
     # y = (m1 * x) + b1 and y = (m2 * x) + b2 intersect.
 
 
-    y = 0 #replace this with your calculation for y
+    y = (((b2 - b1) / (m1 - m2)) * m1) + b1 #replace this with your calculation for y
     return y
 
 
@@ -45,7 +45,7 @@ def distancebetweenpoints(x1, y1, x2, y2):
     # (x1, y1) and (x2, y2).
 
 
-    distance = 0 # replace with your calculation for distance
+    distance = math.sqrt(((x1 - x2) ** 2) + ((y1 - y2) ** 2)) # replace with your calculation for distance
     return distance
 
 def heronsformula(a, b, c):
@@ -53,8 +53,9 @@ def heronsformula(a, b, c):
     # You may want to look up Heron's formula online.
 
 
+    s = (a + b + c) / 2
 
-    area = 0 #replace this with your calculation for area
+    area = math.sqrt(s * (s - a) * (s-b) * (s-c)) #replace this with your calculation for area
     return area
 
 def areaofatriangle(m1, b1, m2, b2, m3, b3):
@@ -62,14 +63,36 @@ def areaofatriangle(m1, b1, m2, b2, m3, b3):
     #triangle when the three sides are described by three linear equations
     #y = (m1 * x) + b1;  y = (m2 * x) + b2; and y = (m3 * x) + b3
 
+    #Finding the three intersection points
+    firstX = intersectionoftwolines_x(m1, b1, m2, b2)
+    firstY = intersectionoftwolines_y(m1, b1, m2, b2)
+    secondX = intersectionoftwolines_x(m1, b1, m3, b3)
+    secondY = intersectionoftwolines_y(m1, b1, m3, b3)
+    thirdX = intersectionoftwolines_x(m2, b2, m3, b3)
+    thirdY = intersectionoftwolines_y(m2, b2, m3, b3)
 
-    area = 0 #replace this with your calculation for area
-    return area
+    #Finding the length of the three sides of the triangle
+    aa = distancebetweenpoints(firstX, firstY, secondX, secondY)
+    bb = distancebetweenpoints(firstX, firstY, thirdX, thirdY)
+    cc = distancebetweenpoints(secondX, secondY, thirdX, thirdY)
+
+    #Calculating the area of the triangle made by the three intersecting lines
+    area = heronsformula(aa, bb, cc) #replace this with your calculation for area
+
+    if m1 == m2:
+        print("Line 1 and 2 are parallel!")
+    elif m1 == m3:
+        print("Line 1 and 3 are parallel!")
+    elif m2 == m3:
+        print("Line 2 and 3 are parallel!")
+    elif firstX == secondX == thirdX and firstY == secondY == thirdY:
+        print("The three lines intersect at a single point!")
+    else:
+        return area
 
 
 #TEST CASES
 #These print statements will be true when your functions are working.
-
 print("Distance between Points:")
 #If these are both true, it is likely that your function is working.
 print(distancebetweenpoints(0, 0, 3, 4) == 5)
